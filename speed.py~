@@ -21,7 +21,7 @@ def download(p):
 	session_data=0
 	print "Getting proxy status..."
 	start_time=time.time()
-	f = open("file.3gp","wb")
+	f = open("file12346.3gp","wb")
 	data = r.read(1024)
 	while data :
 		f.write(data)
@@ -32,11 +32,11 @@ def download(p):
 	f.close()
 	speed=session_data/(1024*10.0)
 	print "Speed for %s is %.2f KBps" %(p,speed)
-	os.system("rm file.3gp")
+	os.system("rm file123456.3gp")
 
 def Main():
         print "Starting proxy test..."
-        print "##############################################################################################"
+        print "##############################################################"
 	proxy=['172.31.100.26','172.31.100.29','172.31.100.30','172.31.102.29','172.31.103.29','172.31.102.14']
 	for element in proxy:
 		download(element)
