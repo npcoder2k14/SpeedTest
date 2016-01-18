@@ -1,6 +1,7 @@
 # SpeedTest
-This scipt is for MNNIT only.....
-This script will tell you which proxy is working which are down
+This script is for MNNIT only.....
+
+This script will tell you which proxy is working and which are down...
 
 Run with python 2.7 and Enjoy ;)
 
