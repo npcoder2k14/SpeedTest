@@ -1,46 +1,80 @@
 import urllib2
-import os,time
+import os,time,sys
+from multiprocessing import *
+
 def download(p):
+     try:
         proxydict = {
                     "http" : "http://edcguest:edcguest@"+p+":3128" 
                     }
-        url = 'http://tvshows4mobile.com/download/17447'
+        url = 'http://mirror2.internetdownloadmanager.com/idman625build10.exe?b=1&filename=idman625build10.exe'
         header = { 'USER_AGENT' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
         proxy = urllib2.ProxyHandler(proxydict)
         auth = urllib2.HTTPBasicAuthHandler()
         opener = urllib2.build_opener(proxy, auth, urllib2.HTTPHandler)
         urllib2.install_opener(opener)
-        print "Connecting with %s ..." %(p)
+        k = p.split(".")
+        file1="."+str(k[3])+str(k[2])
+        if(os.path.isfile(file1)):
+            os.system("rm "+file1)
+        #print "Connecting with %s ..." %(p)
         try : 
-            r = urllib2.urlopen(urllib2.Request(url, headers = header),timeout=10)
+            r = urllib2.urlopen(urllib2.Request(url, headers = header))
         except:
             print "proxy %s is down" %p  
             return     
         content_length = r.headers['content-length']
         session_data=0
-        print "Getting proxy status..."
+        #print "Getting proxy status..."
+        session_time=int(time.time())
         start_time=time.time()
-        f = open("file12346.3gp","wb")
+        f = open(file1,"wb")
         data = r.read(1024)
         while data :
             f.write(data)
             session_data += len(data)
-            if(int(time.time()) == int(start_time+10)):
-                break
+            if(int(time.time()) == int(session_time+10)):
+                sys.stdout.write("speed for %s is %.2f KBps\n" %(p,session_data/(1024*(time.time()-start_time))))
+                session_time+=10                
             data=r.read(1024)
         f.close()
-        speed=session_data/(1024*10.0)
-        print "Speed for %s is %.2f KBps" %(p,speed)
-        os.system("rm file12346.3gp")
-
+        os.system("rm "+file1)
+     except (KeyboardInterrupt,SystemExit):
+        print "You pressed Ctrl-C"
+        if(os.path.isfile(".10026")):
+            os.system("rm .10026") 
+        if(os.path.isfile(".10029")):
+            os.system("rm .10029") 
+        if(os.path.isfile(".10030")):
+            os.system("rm .10030") 
+        if(os.path.isfile(".10229")):
+            os.system("rm .10229") 
+        if(os.path.isfile(".10329")):
+            os.system("rm .10329") 
+        if(os.path.isfile(".10214")):
+            os.system("rm .10214") 
+       
 def Main():
-        print "Starting proxy test..."
-        print "##############################################################"
-        proxy=['172.31.102.29','172.31.103.29','172.31.100.29','172.31.102.14','172.31.100.30','172.31.100.26']
-        
-        for element in proxy:
-            download(element)
-
+      print "Starting proxy test..."
+      print "##############################################################"
+      proxy=['172.31.100.26','172.31.100.29','172.31.100.30','172.31.102.29','172.31.103.29','172.31.102.14']
+      try:
+         while True:
+            p=Pool(6)
+            p.map(download,proxy)
+      except (KeyboardInterrupt,SystemExit):
+        if(os.path.isfile(".10026")):
+            os.system("rm .10026") 
+        if(os.path.isfile(".10029")):
+            os.system("rm .10029") 
+        if(os.path.isfile(".10030")):
+            os.system("rm .10030") 
+        if(os.path.isfile(".10229")):
+            os.system("rm .10229") 
+        if(os.path.isfile(".10329")):
+            os.system("rm .10329") 
+        if(os.path.isfile(".10214")):
+            os.system("rm .10214")                                           
 
 if __name__=="__main__" :
     Main()
