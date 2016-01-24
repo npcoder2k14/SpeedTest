@@ -20,7 +20,7 @@ def download(p):
         #print "Connecting with %s ..." %(p)
         try :
             r = urllib2.urlopen(urllib2.Request(url, headers = header),timeout=10)
-        except:
+        except (urllib2.socket.timeout,KeyboardInterrupt):
             print "proxy %s is down" %p
             return
         content_length = r.headers['content-length']
@@ -39,8 +39,8 @@ def download(p):
             data=r.read(1024)
         f.close()
         os.system("rm "+file1)
-     except (KeyboardInterrupt,SystemExit):
-        sys.stdout.write("You pressed Ctrl-C\n")
+     except (urllib2.socket.timeout,KeyboardInterrupt,SystemExit):
+        sys.stdout.write("Some error occurred\n")
         if(os.path.isfile(".10026")):
             os.system("rm .10026")
         if(os.path.isfile(".10029")):
@@ -62,7 +62,7 @@ def Main():
             p=Pool(6)
             p.map(download,proxy)
           #  os.system("clear")
-      except (KeyboardInterrupt,SystemExit):
-            print "some error occurred"
+      except (urllib2.socket.timeout,KeyboardInterrupt,SystemExit):
+            print "Some error occurred"
 if __name__=="__main__" :
     Main()
