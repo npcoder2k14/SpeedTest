@@ -5,10 +5,12 @@ from multiprocessing import *
 def download(p):
      try:
         proxydict = {
-                    "http" : "http://edcguest:edcguest@"+p+":3128"
+                    "http" : "http://heed:ravi@"+p+":3128",
+                    "https" : "http://edcguest:edcguest@"+p+":3128",
                     }
+        #url = 'http://tvshows4mobile.com/download/16539'
         url = 'http://mirror2.internetdownloadmanager.com/idman625build10.exe?b=1&filename=idman625build10.exe'
-        header = { 'USER_AGENT' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
+        header = { 'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
         proxy = urllib2.ProxyHandler(proxydict)
         auth = urllib2.HTTPBasicAuthHandler()
         opener = urllib2.build_opener(proxy, auth, urllib2.HTTPHandler)
@@ -20,7 +22,7 @@ def download(p):
         #print "Connecting with %s ..." %(p)
         try :
             r = urllib2.urlopen(urllib2.Request(url, headers = header),timeout=10)
-        except (urllib2.socket.timeout,KeyboardInterrupt):
+        except (KeyboardInterrupt,urllib2.socket.error):
             print "proxy %s is down" %p
             return
         content_length = r.headers['content-length']
@@ -39,7 +41,7 @@ def download(p):
             data=r.read(1024)
         f.close()
         os.system("rm "+file1)
-     except (urllib2.socket.timeout,KeyboardInterrupt,SystemExit):
+     except (KeyboardInterrupt,SystemExit):
         sys.stdout.write("Some error occurred\n")
         if(os.path.isfile(".10026")):
             os.system("rm .10026")
@@ -53,16 +55,19 @@ def download(p):
             os.system("rm .10329")
         if(os.path.isfile(".10214")):
             os.system("rm .10214")
+        return
 
 def Main():
       print "Starting proxy test..."
       print "##############################################################"
-      proxy=['172.31.100.26','172.31.100.29','172.31.100.30','172.31.102.29','172.31.103.29','172.31.102.14']
+      proxy=['172.31.102.29','172.31.100.29','172.31.103.29','172.31.100.26','172.31.100.30','172.31.102.14']
       try:
             p=Pool(6)
             p.map(download,proxy)
           #  os.system("clear")
-      except (urllib2.socket.timeout,KeyboardInterrupt,SystemExit):
+      except (KeyboardInterrupt,SystemExit,urllib2.socket.error):
             print "Some error occurred"
 if __name__=="__main__" :
     Main()
+
+    os.system("rm .10229")
