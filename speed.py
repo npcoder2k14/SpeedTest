@@ -70,4 +70,4 @@ def Main():
 if __name__=="__main__" :
     Main()
 
-    os.system("rm .10229")
+    
