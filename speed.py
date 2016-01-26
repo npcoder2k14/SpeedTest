@@ -16,7 +16,7 @@ def download(p):
         opener = urllib2.build_opener(proxy, auth, urllib2.HTTPHandler)
         urllib2.install_opener(opener)
         k = p.split(".")
-        file1="."+str(k[3])+str(k[2])
+        file1="."+str(k[2])+str(k[3])
         if(os.path.isfile(file1)):
             os.system("rm "+file1)
         #print "Connecting with %s ..." %(p)
@@ -45,6 +45,7 @@ def download(p):
                 return
         f.close()
         os.system("rm "+file1)
+        #print "REMOVED" + p
      except (KeyboardInterrupt,SystemExit,urllib2.URLError):
         sys.stdout.write("Some error occurred\n")
         if(os.path.isfile(".10026")):
