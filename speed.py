@@ -51,9 +51,9 @@ def download(p):
             os.system("rm .10026")
         if(os.path.isfile(".10029")):
             os.system("rm .10029")
+        if(os.path.isfile(".10030")):
             os.system("rm .10030")
         if(os.path.isfile(".10229")):
-            if(os.path.isfile(".10030")):
             os.system("rm .10229")
         if(os.path.isfile(".10329")):
             os.system("rm .10329")
