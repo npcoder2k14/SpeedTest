@@ -22,7 +22,7 @@ def download(p):
         #print "Connecting with %s ..." %(p)
         try :
             r = urllib2.urlopen(urllib2.Request(url, headers = header),timeout=10)
-        except (KeyboardInterrupt,urllib2.socket.error):
+        except (KeyboardInterrupt,urllib2.socket.error,urllib2.URLError):
             print "proxy %s is down" %p
             return
         content_length = r.headers['content-length']
@@ -38,18 +38,22 @@ def download(p):
             if(int(time.time()) == int(session_time+10)):
                 print "\rspeed for %s is %.2f KBps\n" %(p,session_data/(1024*(time.time()-start_time))),
                 session_time+=10
-            data=r.read(1024)
+            try:
+                data=r.read(1024)
+            except(KeyboardInterrupt,urllib2.URLError,urllib2.socket.error):
+                print "some error occured in "+p
+                return
         f.close()
         os.system("rm "+file1)
-     except (KeyboardInterrupt,SystemExit):
+     except (KeyboardInterrupt,SystemExit,urllib2.URLError):
         sys.stdout.write("Some error occurred\n")
         if(os.path.isfile(".10026")):
             os.system("rm .10026")
         if(os.path.isfile(".10029")):
             os.system("rm .10029")
-        if(os.path.isfile(".10030")):
             os.system("rm .10030")
         if(os.path.isfile(".10229")):
+            if(os.path.isfile(".10030")):
             os.system("rm .10229")
         if(os.path.isfile(".10329")):
             os.system("rm .10329")
@@ -65,9 +69,19 @@ def Main():
             p=Pool(6)
             p.map(download,proxy)
           #  os.system("clear")
-      except (KeyboardInterrupt,SystemExit,urllib2.socket.error):
+      except (KeyboardInterrupt,SystemExit,urllib2.socket.error,urllib2.URLError):
             print "Some error occurred"
+            if(os.path.isfile(".10026")):
+                os.system("rm .10026")
+            if(os.path.isfile(".10029")):
+                os.system("rm .10029")
+            if(os.path.isfile(".10030")):
+                os.system("rm .10030")
+            if(os.path.isfile(".10229")):
+                os.system("rm .10229")
+            if(os.path.isfile(".10329")):
+                os.system("rm .10329")
+            if(os.path.isfile(".10214")):
+                os.system("rm .10214")
 if __name__=="__main__" :
     Main()
-
-    
