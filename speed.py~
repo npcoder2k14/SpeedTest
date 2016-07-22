@@ -9,8 +9,8 @@ def download(p):
                     "http" : "http://heed:ravi@"+p+":3128",
                     "https" : "http://edcguest:edcguest@"+p+":3128",
                     }
-        url = 'http://tvshows4mobile.com/download/16539'
-        #url = 'http://mirror2.internetdownloadmanager.com/idman625build10.exe?b=1&filename=idman625build10.exe'
+        #url = 'http://tvshows4mobile.com/download/16539'
+        url = 'http://mirror2.internetdownloadmanager.com/idman625build10.exe?b=1&filename=idman625build10.exe'
         header = { 'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
         proxy = urllib2.ProxyHandler(proxydict)
         auth = urllib2.HTTPBasicAuthHandler()
@@ -37,19 +37,19 @@ def download(p):
         while data :
             f.write(data)
             session_data += len(data)
-            if(int(time.time()) == int(session_time+10)):
-                print("speed for %s is %.2f KBps\n" %(p,session_data/(1024*(10))))
+            if(int(time.time()) == int(session_time+5)):
+                print "\rspeed for %s is %.2f KBps\n" %(p,session_data/(1024*(time.time()-start_time))),
+                time.sleep(5)
                 session_data=0
-                session_time=time.time()
+                session_time+=10
             try:
                 data=r.read(1024)
             except KeyboardInterrupt:
-                print "Keyboard Interrupt"
   		sys.exit(0)
-  		return
+  		return 
             except(urllib2.URLError,urllib2.socket.error):
                 print "some error occured in "+p
-
+            
         f.close()
         os.system("rm "+file1)
         #print "REMOVED" + p
@@ -67,17 +67,14 @@ def download(p):
             os.system("rm .10329")
         if(os.path.isfile(".10214")):
             os.system("rm .10214")
-        if(os.path.isfile(".01")):
-            os.system("rm .01")
         return
 
 def Main():
       print "Starting proxy test..."
       print "##############################################################"
-     # proxy=['172.31.100.29']
-      proxy=['172.31.102.29','172.31.100.29','172.31.103.29','172.31.102.14','127.0.0.1']
+      proxy=['172.31.102.29','172.31.100.29','172.31.103.29','172.31.102.14']
       try:
-            p=Pool(5)
+            p=Pool(cpu_count())
             p.map(download,proxy)
           #  os.system("clear")
       except (KeyboardInterrupt,SystemExit,urllib2.socket.error,urllib2.URLError):
